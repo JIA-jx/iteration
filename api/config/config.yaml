@@ -1,0 +1,133 @@
+server:
+  name: "api"
+  addr: "0.0.0.0:80"
+zap:
+  debugFileName: "D:\\GoProject\\iteration\\logs\\debug\\api-debug.log"
+  infoFileName:  "D:\\GoProject\\iteration\\logs\\info\\api-info.log"
+  warnFileName:  "D:\\GoProject\\iteration\\logs\\error\\api-error.log"
+  maxSize: 200
+  maxAge: 20
+  maxBackups: 3
+etcd:
+  addrs:
+    - "127.0.0.1:2379"
+jaeger:
+  endpoints: "http://localhost:14268/api/traces"
+kafka:
+  brokers:
+    - "127.0.0.1:9092"
+
+error_code_const:
+  service_unavailable: 503  # 服务不可用（选择限流降级）
+  too_many_requests: 429    # 请求频繁
+  bad_request: 400          # 请求参数错误
+  unauthorized: 401         # 未认证
+
+gateway:
+  rate_limit:
+    global:
+      algorithm: "token_bucket"
+      max_tokens: 50
+      token_rate: 5
+      degrade_threshold: 0.8
+      degrade_action: "return_error"
+      error_code: 503
+      error_msg: "服务繁忙，请稍后重试"
+      redirect_url: "/"
+
+    apis:
+      "/iteration/login/getCaptcha":
+        algorithm: "token_bucket"
+        max_tokens: 200
+        token_rate: 30
+        degrade_threshold: 0.9
+        degrade_action: "return_error"
+        error_msg: "验证码获取频繁，请60秒后重试"
+      "/iteration/login/register":
+        algorithm: "token_bucket"
+        max_tokens: 150
+        token_rate: 20
+        degrade_threshold: 0.85
+        degrade_action: "return_error"
+        error_msg: "注册请求频繁，请稍后重试"
+      "/iteration/login":
+        algorithm: "token_bucket"
+        max_tokens: 180
+        token_rate: 25
+        degrade_threshold: 0.85
+        degrade_action: "return_error"
+        error_msg: "登录请求频繁，请25s后重试"
+
+      "/iteration/index":
+        algorithm: "leaky_bucket"
+        max_tokens: 100
+        token_rate: 15
+        degrade_threshold: 0.85
+        degrade_action: "return_empty"
+        error_msg: "项目首页访问频繁，请稍后重试"
+      "/iteration/selfList":
+        algorithm: "leaky_bucket"
+        max_tokens: 80
+        token_rate: 12
+        degrade_threshold: 0.8
+        degrade_action: "return_empty"
+        error_msg: "我的项目列表加载频繁，请稍后重试"
+      "/iteration/task/selfList":
+        algorithm: "leaky_bucket"
+        max_tokens: 70
+        token_rate: 10
+        degrade_threshold: 0.8
+        degrade_action: "return_empty"
+        error_msg: "我的任务列表加载频繁，请稍后重试"
+      "/iteration/requirement/save":
+        algorithm: "leaky_bucket"
+        max_tokens: 60
+        token_rate: 8
+        degrade_threshold: 0.8
+        error_msg: "任务保存频繁，请5秒后重试"
+      "/iteration/template/uploadCover":
+        algorithm: "token_bucket"
+        max_tokens: 60
+        token_rate: 5
+        degrade_threshold: 0.7
+        degrade_action: "redirect"
+        redirect_url: "/"
+        error_msg: "封面上传频繁，已返回首页"
+      "/iteration/requirement/file/uploadFiles":
+        algorithm: "token_bucket"
+        max_tokens: 50
+        token_rate: 4
+        degrade_threshold: 0.7
+        degrade_action: "redirect"
+        redirect_url: "/"
+        error_msg: "文件上传频繁，已返回首页"
+
+      "/iteration/organization/_getOrgList":
+        algorithm: "token_bucket"
+        max_tokens: 100
+        token_rate: 15
+        degrade_threshold: 0.8
+        error_msg: "组织列表加载频繁，请稍后重试"
+      "/iteration/team":
+        algorithm: "token_bucket"
+        max_tokens: 80
+        token_rate: 10
+        error_msg: "部门列表加载频繁，请稍后重试"
+
+      "/iteration/recycle":
+        algorithm: "token_bucket"
+        max_tokens: 50
+        token_rate: 5
+        degrade_threshold: 0.8
+        degrade_action: "redirect"
+        redirect_url: "/"
+        error_msg: "项目回收操作频繁，已返回首页"
+minio:
+  endpoint: "localhost:9009"
+  accessKey: "0RnUy2AUBZrpsI3U"
+  secretKey: "9lHE5HpEUwHni1vxaFnf9BosILz79nd3"
+  bucket: "iteration"
+  secure: false
+
+sms:
+  echoCode: true

@@ -1,0 +1,59 @@
+server:
+  name: "project-project"
+  addr: "0.0.0.0:8081"
+  internalToken: ""
+  internalAuth: true
+zap:
+  debugFileName: "/logs/debug/project-debug.log"
+  infoFileName: "/logs/info/project-info.log"
+  warnFileName: "/logs/error/project-error.log"
+  maxSize: 500
+  maxAge: 28
+  maxBackups: 3
+redis:
+  host: "redis6"
+  port: 6379
+  password: ""
+  db: 0
+kafka:
+  brokers:
+    - "kafka:29092"
+grpc:
+  etcdAddr: "0.0.0.0:8882"
+  addr: "0.0.0.0:8882"
+  name: "project"
+  version: "1.0.0"
+  weight: 2
+etcd:
+  addrs:
+    - "etcd3:2379"
+mysql:
+  username: root
+  password: root
+  host: mysql8
+  port: 3306
+  db: msproject
+db:
+  separation: false
+  master:
+    name: master
+    username: root
+    password: root
+    host: mysql8
+    port: 3306
+    db: msproject
+  slave: []
+jwt:
+  accessExp: 7
+  refreshExp: 14
+  accessSecret: demo1
+  refreshSecret: demo_1
+jaeger:
+  endpoints: "http://jaeger:14268/api/traces"
+delay:
+  shards: 1
+  ownShards: []
+elk:
+  address: "http://elasticsearch:9200"
+set:
+  ai_api_key: ""

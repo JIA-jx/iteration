@@ -1,0 +1,71 @@
+server:
+  name: "project-project"
+  addr: "127.0.0.1:8081"
+  internalToken: ""
+  internalAuth: false
+zap:
+  debugFileName: "D:\\GoProject\\logs\\debug\\menu-debug.log"
+  infoFileName: "D:\\GoProject\\logs\\info\\menu-info.log"
+  warnFileName: "D:\\GoProject\\logs\\error\\menu-error.log"
+  maxSize: 500,
+  maxAge: 28,
+  MaxBackups: 3
+redis:
+  host: "localhost"
+  port: 6379
+  password: ""
+  db: 0
+kafka:
+  brokers:
+    - "localhost:9092"
+grpc:
+  etcdAddr: "127.0.0.1:8882"
+  addr: "127.0.0.1:8882"
+  name: "project"
+  version: "1.0.0"
+  weight: 2
+etcd:
+  addrs:
+    - "127.0.0.1:2379"
+mysql:
+  username: root
+  password: root
+  host: 127.0.0.1
+  port: 3306
+  db: msproject
+db:
+  separation: true
+  master:
+    name: master
+    username: root
+    password: root
+    host: 127.0.0.1
+    port: 3306
+    db: msproject
+  slave:
+    - username: root
+      password: root
+      host: 127.0.0.1
+      port: 3306
+      db: msproject
+      name: slave1
+    - username: root
+      password: root
+      host: 127.0.0.1
+      port: 3306
+      db: msproject
+      name: slave2
+jwt:
+  accessExp: 7
+  refreshExp: 14
+  accessSecret: demo1
+  refreshSecret: demo_1
+jaeger:
+  endpoints: "http://localhost:14268/api/traces"
+delay:
+  shards: 1
+  ownShards: []
+elk:
+  address: "http://127.0.0.1:9200"
+set:
+  ai_api_key: "sk-cd5bb4868bac493c98d3e56dc74aadc6"

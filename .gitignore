@@ -1,0 +1,15 @@
+.gotoolchain/
+.gocache/
+.gocache2/
+.gopath/
+.gotmp/
+.gocover/
+.protobak/
+.idea/
+target/
+logs/
+uploads/
+*.exe
+*.test
+*.log
+.DS_Store
